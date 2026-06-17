@@ -1,0 +1,1619 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Day7｜これだから最近の若者は｜商品作成・LINE自動セールス・紙芝居カルーセル・デザイン添削</title>
+  <style>
+    :root{
+      --bg:#eef2f7;
+      --bg2:#dfe7f1;
+      --wall:#f7f9fc;
+      --desk:#8b5e3c;
+      --desk2:#6f472d;
+      --panel:#ffffff;
+      --panel2:#f8fafc;
+      --ink:#172033;
+      --muted:#667085;
+      --sub:#98a2b3;
+      --line:#d0d5dd;
+      --navy:#172b4d;
+      --blue:#2563eb;
+      --sky:#e0f2fe;
+      --green:#16a34a;
+      --gold:#f59e0b;
+      --red:#dc2626;
+      --redSoft:#fee2e2;
+      --shadow:0 18px 50px rgba(23,32,51,.13);
+      --radius:22px;
+      --mono:ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      font-family:var(--sans);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.85), rgba(238,242,247,.86)),
+        radial-gradient(700px 460px at 10% 5%, rgba(37,99,235,.16), transparent 60%),
+        radial-gradient(720px 480px at 95% 0%, rgba(245,158,11,.14), transparent 55%),
+        linear-gradient(180deg,var(--bg),var(--bg2));
+      overflow-x:hidden;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      opacity:.38;
+      background:
+        linear-gradient(90deg, transparent 0 74px, rgba(23,43,77,.06) 74px 75px, transparent 75px 150px),
+        linear-gradient(0deg, transparent 0 74px, rgba(23,43,77,.05) 74px 75px, transparent 75px 150px);
+      background-size:150px 150px;
+    }
+    .officeSkyline{
+      position:fixed;
+      inset:auto 0 0 0;
+      height:180px;
+      z-index:0;
+      pointer-events:none;
+      opacity:.22;
+      background:
+        linear-gradient(90deg, transparent 0 6%, #172b4d 6% 15%, transparent 15% 18%, #172b4d 18% 29%, transparent 29% 34%, #172b4d 34% 47%, transparent 47% 53%, #172b4d 53% 64%, transparent 64% 70%, #172b4d 70% 88%, transparent 88%),
+        linear-gradient(180deg, transparent, #172b4d);
+      clip-path:polygon(0 50%, 8% 50%, 8% 25%, 15% 25%, 15% 55%, 24% 55%, 24% 10%, 35% 10%, 35% 62%, 45% 62%, 45% 30%, 56% 30%, 56% 58%, 68% 58%, 68% 18%, 78% 18%, 78% 62%, 88% 62%, 88% 38%, 100% 38%, 100% 100%, 0 100%);
+    }
+    a{color:#1d4ed8}
+    button{font:inherit}
+    .app{
+      position:relative;
+      z-index:1;
+      width:min(1440px, calc(100% - 24px));
+      margin:18px auto 48px;
+      display:grid;
+      grid-template-columns:282px minmax(0,1fr) 270px;
+      gap:14px;
+      align-items:start;
+    }
+    .side,.castRail{
+      position:sticky;
+      top:14px;
+      max-height:calc(100vh - 28px);
+      overflow:auto;
+      border:1px solid rgba(208,213,221,.9);
+      border-radius:var(--radius);
+      background:rgba(255,255,255,.78);
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(16px);
+    }
+    .side{padding:14px}
+    .logoCard{
+      border-radius:18px;
+      padding:14px;
+      background:
+        linear-gradient(135deg, rgba(23,43,77,.96), rgba(37,99,235,.88)),
+        var(--navy);
+      color:#fff;
+      box-shadow:0 16px 34px rgba(23,43,77,.22);
+      position:relative;
+      overflow:hidden;
+    }
+    .logoCard::after{
+      content:"OFFICE AI TRAINING";
+      position:absolute;
+      right:-42px;
+      top:18px;
+      transform:rotate(24deg);
+      color:rgba(255,255,255,.22);
+      border:1px solid rgba(255,255,255,.22);
+      padding:6px 44px;
+      font:800 10px/1 var(--mono);
+      letter-spacing:.14em;
+    }
+    .logoCard h1{
+      margin:0;
+      font-size:20px;
+      line-height:1.35;
+      letter-spacing:.02em;
+    }
+    .logoCard p{
+      margin:10px 0 0;
+      color:#dbeafe;
+      line-height:1.75;
+      font-size:12px;
+    }
+    .badgeRow{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 8px}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 9px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--navy);
+      font:800 11px/1 var(--mono);
+    }
+    details{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(255,255,255,.78);
+      margin:10px 0;
+      overflow:hidden;
+    }
+    summary{
+      list-style:none;
+      cursor:pointer;
+      user-select:none;
+      padding:12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-weight:900;
+      font-size:13px;
+    }
+    summary::-webkit-details-marker{display:none}
+    .chev{width:10px;height:10px;border-right:2px solid #475467;border-bottom:2px solid #475467;transform:rotate(45deg);transition:.18s}
+    details[open] .chev{transform:rotate(-135deg)}
+    .menuLinks{display:grid;gap:7px;padding:0 10px 12px}
+    .menuLinks a{
+      text-decoration:none;
+      color:#344054;
+      font-size:12px;
+      line-height:1.45;
+      padding:8px 10px;
+      border-radius:12px;
+      border:1px solid #eaecf0;
+      background:#fff;
+    }
+    .menuLinks a:hover{border-color:#bfdbfe;background:#eff6ff;color:#1d4ed8}
+    .tocShell{
+      margin-top:14px;
+      padding:0;
+      border:0;
+      background:transparent;
+      box-shadow:none;
+    }
+    .tocTitle{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin:0 0 10px;
+      padding:0 4px;
+      color:#172b4d;
+      font-weight:1000;
+      font-size:13px;
+      letter-spacing:.03em;
+    }
+    .tocStack{
+      display:grid;
+      gap:10px;
+    }
+    .tocGroup{
+      margin:0;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:16px;
+      background:
+        linear-gradient(145deg,rgba(20,20,20,.98),rgba(4,4,4,.98)),
+        repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 38px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.06),
+        0 10px 24px rgba(15,23,42,.16);
+      overflow:hidden;
+    }
+    .tocGroup > summary{
+      min-height:44px;
+      padding:12px 13px;
+      color:#f8fafc;
+      background:transparent;
+      font-size:13px;
+      font-weight:1000;
+      letter-spacing:.01em;
+    }
+    .tocGroup > summary .chev{
+      border-color:#e5e7eb;
+      opacity:.92;
+    }
+    .tocGroup[open]{
+      border-color:rgba(148,163,184,.45);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.08),
+        0 14px 30px rgba(15,23,42,.22);
+    }
+    .tocGroup[open] > summary{
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .tocGroup .menuLinks{
+      display:grid;
+      gap:8px;
+      padding:10px 12px 13px;
+      background:rgba(255,255,255,.035);
+    }
+    .tocGroup .menuLinks a{
+      color:#e5e7eb;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.055);
+      border-radius:13px;
+      padding:10px 11px;
+      font-size:12px;
+    }
+    .tocGroup .menuLinks a:hover{
+      border-color:rgba(96,165,250,.55);
+      background:rgba(59,130,246,.18);
+      color:#ffffff;
+    }
+    .tocGroup.disabled{
+      opacity:.72;
+    }
+    .tocGroup.disabled .menuLinks a{
+      pointer-events:none;
+      color:#9ca3af;
+    }
+    .tocJump{
+      min-height:48px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:13px 14px;
+      text-decoration:none;
+      color:#f8fafc;
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:16px;
+      background:
+        linear-gradient(145deg,rgba(20,20,20,.98),rgba(4,4,4,.98)),
+        repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 38px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.06),
+        0 10px 24px rgba(15,23,42,.16);
+      font-size:13px;
+      font-weight:1000;
+      letter-spacing:.01em;
+      transition:.16s ease;
+    }
+    .tocJump .chev{
+      border-color:#e5e7eb;
+      opacity:.92;
+      transform:rotate(-45deg);
+    }
+    .tocJump:hover{
+      transform:translateX(3px);
+      border-color:rgba(96,165,250,.55);
+      background:
+        linear-gradient(145deg,rgba(28,38,54,.98),rgba(8,14,24,.98)),
+        repeating-linear-gradient(90deg,rgba(255,255,255,.03) 0 1px,transparent 1px 38px);
+      color:#ffffff;
+    }
+    main{
+      min-width:0;
+      border:1px solid rgba(208,213,221,.95);
+      border-radius:calc(var(--radius) + 8px);
+      background:rgba(255,255,255,.86);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .ceiling{
+      height:34px;
+      background:
+        linear-gradient(90deg, rgba(23,43,77,.08) 0 1px, transparent 1px 60px),
+        linear-gradient(180deg, #f8fafc, #eef2f7);
+      border-bottom:1px solid var(--line);
+    }
+    .content{position:relative;padding:22px clamp(14px,2.4vw,30px) 28px}
+    .hero{
+      position:relative;
+      overflow:hidden;
+      border:1px solid #cbd5e1;
+      border-radius:26px;
+      padding:20px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.94), rgba(239,246,255,.96) 46%, rgba(255,251,235,.94)),
+        var(--panel);
+      box-shadow:0 18px 42px rgba(23,32,51,.10);
+    }
+    .hero::before{
+      content:"";
+      position:absolute;
+      right:18px;
+      bottom:18px;
+      width:180px;height:102px;
+      border-radius:12px 12px 4px 4px;
+      background:
+        linear-gradient(180deg,#ffffff,#dbeafe 72%,#172b4d 73% 78%,transparent 78%),
+        linear-gradient(90deg, transparent 0 45%, #172b4d 45% 55%, transparent 55%);
+      opacity:.14;
+    }
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:10px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      color:#1d4ed8;
+      font:900 12px/1 var(--mono);
+      letter-spacing:.08em;
+    }
+    h1,h2,h3{line-height:1.35}
+    h1{margin:0;font-size:clamp(26px,3.2vw,42px);letter-spacing:.02em;color:#101828}
+    .lead{margin:12px 0 0;color:#344054;line-height:1.9;font-size:14px;max-width:920px}
+    .themeStrip{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+    .themePill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 11px;
+      border-radius:999px;
+      border:1px solid #d0d5dd;
+      background:#fff;
+      font-size:12px;
+      color:#344054;
+      box-shadow:0 8px 18px rgba(16,24,40,.05);
+    }
+    .chapter{margin-top:20px;padding-top:18px;border-top:1px solid #eaecf0;scroll-margin-top:18px}
+    .chapter h2{margin:0 0 10px;font-size:clamp(20px,2.2vw,28px);letter-spacing:.01em;color:#101828}
+    .chapterLead{margin:0 0 14px;color:var(--muted);line-height:1.85;font-size:14px}
+    .officePanel{
+      position:relative;
+      border:1px solid #d0d5dd;
+      border-radius:22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.94), rgba(248,250,252,.96)),
+        var(--panel);
+      box-shadow:0 18px 44px rgba(16,24,40,.08);
+      padding:16px;
+      overflow:hidden;
+      margin-top:14px;
+    }
+    .officePanel::before{
+      content:"";
+      position:absolute;
+      inset:auto 0 0 0;
+      height:54px;
+      background:linear-gradient(180deg, rgba(139,94,60,.08), rgba(139,94,60,.16));
+      pointer-events:none;
+    }
+    .panelLabel{
+      position:relative;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:12px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      color:#c2410c;
+      font:900 12px/1 var(--mono);
+      letter-spacing:.08em;
+    }
+    .dialogue{position:relative;display:grid;gap:12px}
+    .line{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;align-items:start}
+    .line.right{grid-template-columns:minmax(0,1fr) 64px}
+    .line.right .avatar{grid-column:2}
+    .line.right .bubble{grid-column:1;grid-row:1}
+    .avatar{
+      width:64px;height:64px;border-radius:20px;
+      border:1px solid rgba(23,43,77,.16);
+      background:#fff;
+      box-shadow:0 12px 26px rgba(16,24,40,.12);
+      display:grid;
+      place-items:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .avatar::before{
+      content:attr(data-initial);
+      width:44px;height:44px;border-radius:16px;
+      display:grid;place-items:center;
+      color:#fff;font-weight:1000;font-size:20px;
+      background:linear-gradient(135deg,var(--c1),var(--c2));
+      box-shadow:inset 0 -10px 20px rgba(0,0,0,.14);
+    }
+    .avatar::after{
+      content:"";
+      position:absolute;
+      inset:auto 10px 8px 10px;
+      height:6px;
+      border-radius:999px;
+      background:rgba(23,43,77,.12);
+    }
+    .mugita{--c1:#22c55e;--c2:#15803d}
+    .ishizawa{--c1:#1d4ed8;--c2:#172554}
+    .ebisu{--c1:#f59e0b;--c2:#b45309}
+    .kazama{--c1:#ef4444;--c2:#991b1b}
+    .bubble{
+      position:relative;
+      border:1px solid #d0d5dd;
+      border-radius:18px;
+      padding:12px 13px;
+      background:#fff;
+      box-shadow:0 10px 28px rgba(16,24,40,.07);
+    }
+    .line:not(.right) .bubble::before{
+      content:"";position:absolute;left:-7px;top:22px;width:13px;height:13px;background:#fff;border-left:1px solid #d0d5dd;border-bottom:1px solid #d0d5dd;transform:rotate(45deg)
+    }
+    .line.right .bubble::before{
+      content:"";position:absolute;right:-7px;top:22px;width:13px;height:13px;background:#fff;border-right:1px solid #d0d5dd;border-top:1px solid #d0d5dd;transform:rotate(45deg)
+    }
+    .speaker{display:flex;align-items:center;gap:8px;margin-bottom:6px;color:#172b4d;font-weight:1000;font-size:13px}
+    .roleTag{color:#fff;background:#172b4d;border-radius:999px;padding:3px 7px;font:900 10px/1 var(--mono);white-space:nowrap}
+    .bubble p{margin:0;color:#263044;font-size:14px;line-height:1.85}
+    .bubble b{color:#101828}
+    .term{color:#1d4ed8;font-weight:1000}
+    .infoGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+    .card{
+      border:1px solid #d0d5dd;
+      border-radius:18px;
+      background:#fff;
+      padding:14px;
+      box-shadow:0 12px 28px rgba(16,24,40,.06);
+    }
+    .card b{display:block;margin-bottom:7px;color:#172b4d;font-family:var(--mono);font-size:12px;letter-spacing:.06em}
+    .card p,.card li{margin:0;color:#344054;line-height:1.78;font-size:14px}
+    .card ul{margin:0;padding-left:1.15em}
+    .dangerPanel{
+      position:relative;
+      margin-top:14px;
+      border:1px solid #fecaca;
+      border-radius:20px;
+      background:linear-gradient(135deg,#fff1f2,#fff 65%);
+      padding:14px;
+      box-shadow:0 18px 44px rgba(220,38,38,.08);
+    }
+    .dangerPanel .title{display:flex;align-items:center;gap:10px;font:1000 13px/1 var(--mono);letter-spacing:.08em;color:#b91c1c;text-transform:uppercase}
+    .dangerPanel p{margin:9px 0 0;color:#7f1d1d;line-height:1.8;font-size:14px}
+    .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+    .step{border:1px solid #d0d5dd;border-radius:17px;background:#fff;padding:12px;min-height:148px;box-shadow:0 12px 24px rgba(16,24,40,.05)}
+    .num{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;margin-bottom:9px;background:#172b4d;color:#fff;font-weight:1000;font-family:var(--mono)}
+    .step h3{margin:0 0 7px;color:#101828;font-size:14px}
+    .step p{margin:0;color:#667085;line-height:1.65;font-size:13px}
+    .promptBox{margin-top:12px;padding:13px;border-radius:16px;border:1px solid #bfdbfe;background:#0b1220;color:#dbeafe;font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre-wrap;overflow:auto}
+    .copyRow{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:10px;color:#667085;font-size:12px;flex-wrap:wrap}
+    .copyBtn{border:1px solid #93c5fd;background:linear-gradient(180deg,#dbeafe,#bfdbfe);color:#172b4d;padding:9px 12px;border-radius:12px;cursor:pointer;font-weight:1000}
+    .copyBtn:hover{filter:brightness(.98)}
+    .castRail{padding:12px}
+    .castTitle{margin:0 0 10px;font-weight:1000;font-size:17px;line-height:1.35;color:#101828}
+    .castCard{border:1px solid #d0d5dd;border-radius:18px;background:#fff;padding:10px;margin-bottom:10px;box-shadow:0 12px 24px rgba(16,24,40,.05)}
+    .castTop{display:grid;grid-template-columns:54px minmax(0,1fr);gap:10px;align-items:center}
+    .castCard .avatar{width:54px;height:54px;border-radius:17px}
+    .castCard .avatar::before{width:38px;height:38px;border-radius:14px;font-size:18px}
+    .castText b{display:block;font-size:13px;color:#101828}
+    .castText span{display:block;color:#667085;font-size:11px;line-height:1.5;margin-top:2px}
+    .mission{margin-top:12px;padding:12px;border-radius:16px;border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;font-size:12px;line-height:1.7}
+
+
+    /* ===== Office feeling upgrade ===== */
+    body::after{
+      content:"";
+      position:fixed;
+      left:0;right:0;bottom:0;
+      height:140px;
+      z-index:0;
+      pointer-events:none;
+      opacity:.55;
+      background:
+        linear-gradient(90deg, rgba(111,71,45,.22) 0 12.5%, transparent 12.5% 25%, rgba(111,71,45,.18) 25% 37.5%, transparent 37.5% 50%, rgba(111,71,45,.2) 50% 62.5%, transparent 62.5% 75%, rgba(111,71,45,.18) 75% 87.5%, transparent 87.5%),
+        linear-gradient(180deg, transparent 0 24%, rgba(139,94,60,.28) 24% 48%, rgba(111,71,45,.30) 48% 100%);
+      border-top:1px solid rgba(111,71,45,.18);
+    }
+    .officeRoom{
+      position:fixed;
+      inset:0;
+      z-index:0;
+      pointer-events:none;
+      overflow:hidden;
+    }
+    .officeRoom .window{
+      position:absolute;
+      top:54px;
+      right:36px;
+      width:280px;
+      height:170px;
+      border:10px solid rgba(255,255,255,.72);
+      border-radius:18px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.65) 0 2px, transparent 2px 50%, rgba(255,255,255,.65) calc(50% + 1px) calc(50% + 3px), transparent calc(50% + 3px)),
+        linear-gradient(0deg, rgba(255,255,255,.55) 0 2px, transparent 2px 50%, rgba(255,255,255,.55) calc(50% + 1px) calc(50% + 3px), transparent calc(50% + 3px)),
+        linear-gradient(180deg, #dbeafe, #f8fafc);
+      box-shadow:0 20px 60px rgba(23,32,51,.08);
+      opacity:.46;
+    }
+    .officeRoom .whiteboard{
+      position:absolute;
+      top:74px;
+      left:330px;
+      width:360px;
+      height:150px;
+      border:8px solid rgba(203,213,225,.72);
+      border-radius:16px;
+      background:
+        linear-gradient(90deg, transparent 0 20px, rgba(37,99,235,.16) 20px 24px, transparent 24px 100%),
+        linear-gradient(180deg, #ffffff, #f8fafc);
+      box-shadow:0 18px 50px rgba(16,24,40,.08);
+      opacity:.38;
+    }
+    .officeRoom .whiteboard::before{
+      content:"AI 研修 / Day7";
+      position:absolute;
+      left:22px;top:22px;
+      color:#1d4ed8;
+      font:900 18px/1 var(--sans);
+      letter-spacing:.04em;
+    }
+    .officeRoom .whiteboard::after{
+      content:"□ 目的  □ 条件  □ 確認";
+      position:absolute;
+      left:22px;top:62px;
+      color:#667085;
+      font:700 13px/1.8 var(--sans);
+    }
+    .officeRoom .clock{
+      position:absolute;
+      top:58px;
+      left:72px;
+      width:72px;height:72px;
+      border-radius:50%;
+      border:8px solid rgba(255,255,255,.82);
+      background:#fff;
+      box-shadow:0 12px 36px rgba(16,24,40,.08);
+      opacity:.46;
+    }
+    .officeRoom .clock::before{
+      content:"";
+      position:absolute;
+      left:31px;top:14px;
+      width:4px;height:22px;
+      border-radius:99px;
+      background:#172b4d;
+      transform-origin:bottom;
+      transform:rotate(18deg);
+    }
+    .officeRoom .clock::after{
+      content:"";
+      position:absolute;
+      left:31px;top:32px;
+      width:20px;height:4px;
+      border-radius:99px;
+      background:#172b4d;
+      transform-origin:left;
+      transform:rotate(8deg);
+    }
+    .officeRoom .plant{
+      position:absolute;
+      right:110px;
+      bottom:112px;
+      width:72px;height:110px;
+      opacity:.42;
+    }
+    .officeRoom .plant::before{
+      content:"";
+      position:absolute;
+      left:18px;bottom:22px;
+      width:38px;height:68px;
+      background:
+        radial-gradient(ellipse at 20% 40%, #16a34a 0 35%, transparent 36%),
+        radial-gradient(ellipse at 80% 28%, #22c55e 0 34%, transparent 35%),
+        radial-gradient(ellipse at 52% 10%, #15803d 0 28%, transparent 29%);
+    }
+    .officeRoom .plant::after{
+      content:"";
+      position:absolute;
+      left:16px;bottom:0;
+      width:42px;height:34px;
+      border-radius:8px 8px 16px 16px;
+      background:#8b5e3c;
+    }
+    .ceiling{
+      position:relative;
+      height:46px;
+      background:
+        linear-gradient(90deg, rgba(23,43,77,.08) 0 1px, transparent 1px 60px),
+        linear-gradient(180deg, #ffffff, #eef2f7);
+      border-bottom:1px solid var(--line);
+    }
+    .ceiling::before,.ceiling::after{
+      content:"";
+      position:absolute;
+      top:10px;
+      width:220px;height:18px;
+      border-radius:999px;
+      background:linear-gradient(180deg,#fff7ed,#ffffff);
+      box-shadow:0 0 28px rgba(245,158,11,.22);
+      border:1px solid rgba(245,158,11,.12);
+    }
+    .ceiling::before{left:10%}
+    .ceiling::after{right:10%}
+    .content{
+      background:
+        linear-gradient(90deg, rgba(15,23,42,.035) 0 1px, transparent 1px 36px),
+        linear-gradient(180deg, rgba(255,255,255,.86), rgba(248,250,252,.92));
+    }
+    .officePanel{
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.96), rgba(248,250,252,.96)),
+        linear-gradient(90deg, transparent 0 70%, rgba(219,234,254,.45) 70% 100%);
+    }
+    .officePanel::after{
+      content:"";
+      position:absolute;
+      right:18px;
+      top:18px;
+      width:86px;height:62px;
+      border-radius:10px;
+      border:1px solid rgba(37,99,235,.16);
+      background:
+        linear-gradient(180deg,#dbeafe 0 70%, #172b4d 70% 76%, transparent 76%),
+        linear-gradient(90deg, transparent 0 44%, #172b4d 44% 56%, transparent 56%);
+      opacity:.18;
+      pointer-events:none;
+    }
+    .trainingAccordion{
+      border:1px solid #cbd5e1;
+      border-radius:26px;
+      background:rgba(255,255,255,.82);
+      box-shadow:0 18px 42px rgba(23,32,51,.10);
+      margin:0 0 18px;
+      overflow:hidden;
+    }
+    .trainingAccordion + .trainingAccordion{margin-top:16px}
+    .dayHeader{
+      display:grid;
+      grid-template-columns:minmax(0,1fr);
+      gap:14px;
+      align-items:center;
+      padding:18px 20px;
+      background:
+        linear-gradient(135deg, #ffffff, #eff6ff 55%, #fff7ed),
+        #fff;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .dayBlock{scroll-margin-top:18px}
+    .accordionTitle{
+      display:block;
+      font-size:clamp(20px,2.2vw,30px);
+      line-height:1.35;
+      font-weight:1000;
+      color:#101828;
+      letter-spacing:.01em;
+    }
+    .accordionMeta{
+      display:block;
+      margin-top:7px;
+      color:#667085;
+      font-size:13px;
+      line-height:1.7;
+      font-weight:700;
+    }
+    .accordionIcon{display:none}
+    .accordionBody{padding:0 clamp(14px,2.4vw,30px) 24px}
+    .dayIndexBoard{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+      margin:18px 0;
+      padding:16px;
+      border:1px dashed #cbd5e1;
+      border-radius:22px;
+      background:rgba(248,250,252,.88);
+    }
+    .dayMini{
+      scroll-margin-top:18px;
+      border:1px solid #dbeafe;
+      border-radius:16px;
+      background:#ffffff;
+      padding:13px;
+      box-shadow:0 10px 22px rgba(16,24,40,.06);
+    }
+    .dayMini b{display:block;color:#172b4d;font-size:14px;margin-bottom:4px}
+    .dayMini span{display:block;color:#667085;font-size:12px;line-height:1.6}
+    .dayBackBoard{
+      border:1px solid #cbd5e1;
+      border-radius:24px;
+      padding:18px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.96), rgba(248,250,252,.96)),
+        #fff;
+      box-shadow:0 16px 38px rgba(16,24,40,.08);
+      margin-top:16px;
+    }
+    .officeMemoGrid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+    .memo{
+      border:1px solid #fde68a;
+      border-radius:16px;
+      background:#fffbeb;
+      padding:13px;
+      box-shadow:0 12px 24px rgba(245,158,11,.07);
+      transform:rotate(var(--tilt,0deg));
+    }
+    .memo:nth-child(2){--tilt:.6deg;background:#eff6ff;border-color:#bfdbfe}
+    .memo:nth-child(3){--tilt:-.5deg;background:#f0fdf4;border-color:#bbf7d0}
+    .memo b{display:block;margin-bottom:6px;color:#172b4d;font-size:13px}
+    .memo p{margin:0;color:#475467;line-height:1.7;font-size:13px}
+
+
+    /* ===== External PNG character icon support ===== */
+    .avatarImg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      object-position:center;
+      z-index:2;
+      background:#fff;
+    }
+    .avatar.hasImage::before,
+    .avatar.hasImage::after{
+      display:none;
+    }
+    .avatar.noImage::before,
+    .avatar.noImage::after{
+      display:none;
+    }
+    .avatar.noImage{
+      background:
+        linear-gradient(135deg, rgba(248,250,252,.9), rgba(226,232,240,.9));
+      border:1px dashed rgba(100,116,139,.45);
+    }
+    .speakerIcon{
+      width:28px;
+      height:28px;
+      border-radius:999px;
+      object-fit:cover;
+      object-position:center;
+      border:1px solid rgba(23,43,77,.16);
+      background:#fff;
+      box-shadow:0 4px 10px rgba(16,24,40,.10);
+      flex:0 0 auto;
+    }
+    .speakerIcon.isMissing{
+      display:none;
+    }
+    .speakerName{
+      display:inline-flex;
+      align-items:center;
+      min-width:0;
+    }
+
+    .sourceList ul{margin:10px 0 0;padding-left:1.2em;line-height:1.8;font-size:13px;color:#344054}
+    footer{margin-top:18px;padding:16px 0 4px;color:#667085;text-align:center;font-size:12px;line-height:1.7;border-top:1px solid #eaecf0}
+    @media (max-width:1180px){.app{grid-template-columns:270px minmax(0,1fr)}.castRail{display:none}}
+    @media (max-width:860px){.app{grid-template-columns:1fr;margin-top:10px}.side{position:relative;top:auto;max-height:none}.infoGrid,.flow,.officeMemoGrid,.dayIndexBoard{grid-template-columns:1fr}.line,.line.right{grid-template-columns:56px minmax(0,1fr)}.line.right .avatar{grid-column:1}.line.right .bubble{grid-column:2}.line.right .bubble::before{left:-7px;right:auto;border-right:0;border-top:0;border-left:1px solid #d0d5dd;border-bottom:1px solid #d0d5dd}.avatar{width:56px;height:56px;border-radius:18px}.hero::before{display:none}}
+    @media print{body{background:#fff}.side,.castRail,.officeSkyline{display:none}.app{display:block;width:100%;margin:0}main{box-shadow:none;border:0}.copyBtn{display:none}}
+  </style>
+</head>
+<body>
+  <!--
+  キャラクター画像はHTMLと同じフォルダに置く必要あり。
+  麦田 新人: ./mugita.png
+  石沢課長: ./ishizawa.png
+  恵比寿課長: ./ebisu.png
+  風間部長: ./kazama.png
+  PNGが同じフォルダにない場合、キャラクター画像は表示されない。
+  -->
+
+  <div class="officeSkyline" aria-hidden="true"></div>
+  <div class="officeRoom" aria-hidden="true"><div class="clock"></div><div class="whiteboard"></div><div class="window"></div><div class="plant"></div></div>
+  <div class="app">
+    <aside class="side">
+      <div class="logoCard">
+        <h1>Day7<br>これだから最近の若者は</h1>
+        <p>AI（人工知能＝人間の知的作業を補助する技術）・Instagram・Canva・LINE自動化・紙芝居カルーセル・デザイン添削を、会社の研修室で学ぶHTML教材。目次のDay項目はクリックで開閉し、中のリンクから各Dayへ移動。</p>
+      </div>
+      <div class="badgeRow">
+        <span class="badge">DAY7</span>
+        <span class="badge">OFFICE</span>
+        <span class="badge">AI BASIC</span>
+      </div>
+      <nav class="tocShell" aria-label="目次">
+        <div class="tocTitle"><span>目次</span><span>Day7から開始</span></div>
+        <div class="tocStack">
+          <details class="tocGroup">
+            <summary><span>Day7前半</span><i class="chev"></i></summary>
+            <div class="menuLinks">
+              <a href="#day7-front">Day7前半の先頭へ移動</a>
+              <a href="#day7a-hero">トップ：集客したその先を作れ</a>
+              <a href="#day7a-sec1">1. 麦田の最後の叫び</a>
+              <a href="#day7a-sec2">2. AIでデジタル商品を作る</a>
+              <a href="#day7a-sec3">3. 中身のない商品を売るな</a>
+              <a href="#day7a-sec4">4. ファン化ステップ配信</a>
+              <a href="#day7a-sec5">5. 寝ている間に資産を回す</a>
+              <a href="#day7a-carousel">6. 紙芝居カルーセル戦略</a>
+              <a href="#day7a-carousel-howto">7. つながるカルーセル作成手順</a>
+              <a href="#day7a-sec6">8. 失敗リスクと代替案</a>
+              <a href="#day7a-sec7">9. 完全攻略ロードマップ・参考リンク</a>
+            </div>
+          </details>
+
+          <details class="tocGroup">
+            <summary><span>Day7後半</span><i class="chev"></i></summary>
+            <div class="menuLinks">
+              <a href="#day7-back">Day7後半の先頭へ移動</a>
+              <a href="#day7b-hero">トップ：デザイン添削</a>
+              <a href="#day7b-sec1">1. 麦田の自信作</a>
+              <a href="#day7b-sec2">2. 文字を主役にする</a>
+              <a href="#day7b-sec3">3. 配色は3色以内</a>
+              <a href="#day7b-sec4">4. スマホで読めるか検品</a>
+              <a href="#day7b-sec5">5. プロの技をコピペして化ける</a>
+              <a href="#day7b-sec6">6. 失敗リスクと代替案</a>
+              <a href="#day7b-sec7">7. 添削チェックリスト</a>
+              <a href="#day7b-sec8">8. 参考リンク</a>
+            </div>
+          </details>
+        </div>
+      </nav>
+    </aside>
+
+    <main>
+      <div class="ceiling" aria-hidden="true"></div>
+      <div class="content">
+        <section class="trainingAccordion dayBlock" id="day7-front">
+          <div class="dayHeader">
+            <span>
+              <span class="eyebrow">DAY7 FRONT / SALES AUTOMATION 2026</span>
+              <span class="accordionTitle">Day7前半｜これだから最近の若者は：商品と自動セールスを作れ</span>
+              <span class="accordionMeta">麦田がChatGPT・Claudeで自分のデジタル商品を作り、LINE公式アカウントのステップ配信と紙芝居カルーセル投稿で、教育・販売・ファン化をつなぐ最終章。</span>
+            </span>
+          </div>
+          <div class="accordionBody">
+            <section class="hero" id="day7a-hero">
+              <span class="eyebrow">DAY7 FRONT / DIGITAL PRODUCT & LINE FUNNEL</span>
+              <h1>集客しただけで満足すんな。<br>売る商品と、自動で信頼を積む導線まで作れ。</h1>
+              <p class="lead">
+                Day7前半のテーマは、集客したその先にある「自分のデジタル商品（PDF・講座・動画教材などネット上で売れる商品）」と、LINE公式アカウントを使った「全自動セールス（教育・販売の自動化）」、さらに2026年のInstagramでファン化を強める「紙芝居カルーセル投稿（横にスワイプして読ませる複数枚の画像投稿）」だ。麦田は、Instagramで人を集めた後に必ずぶつかる「売るものがない」「LINEに人は来たのに売り方が分からない」「動画投稿が続かない」という最後の壁を突破する。
+              </p>
+              <div class="themeStrip">
+                <span class="themePill">📦 デジタル商品作成</span>
+                <span class="themePill">🤖 ChatGPT・Claude活用</span>
+                <span class="themePill">💬 LINEステップ配信</span>
+                <span class="themePill">⚠️ 誇大広告・垢BAN防衛</span>
+                <span class="themePill">📚 紙芝居カルーセル</span>
+              </div>
+              <div class="dangerPanel">
+                <div class="title">⚠ まず覚えるルール</div>
+                <p>AI（人工知能＝人間の知的作業を補助する技術）で商品を作れる時代でも、AIが吐いた文章をそのまま売るのは危ない。商品価値は「構成のきれいさ」だけではなく、本人の経験、失敗談、改善手順、購入者が実行できる具体性で決まる。</p>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7a-sec1">
+              <h2>1. 麦田の最後の叫びと、石沢課長の「今どきの若いモンは……」</h2>
+              <p class="chapterLead">インスタの著作権も守り、Canvaで美しい投稿を作り、LINEに見込み客（商品を買ってくれそうな人）を集めた麦田。しかし、パソコンの前でまたフリーズしていた。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 01 / 集客成功後の営業部</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">最後の悲鳴役</span></div>
+                      <p>LINEに人はたくさん集まったっす！ でも、自分が売るための<span class="term">自分の商品</span>が何もないっす！ しかも毎日どんなメッセージを送れば信頼されるのか、文章で手が止まるっす！</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>おい麦田。最後の最後で初歩的な壁につまずいてんじゃねえ。今どきの若いモンは……<b>集客（人を集めること）</b>さえできればビジネスが成功すると思い込む。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>集客の先にあるのは<span class="term">マネタイズ（集めた人をお金に変える仕組み）</span>だ。自分の商品がないならAIに骨組みを作らせろ。売るための文章はLINEの<span class="term">ステップ配信（登録後、決めた順番で自動送信する仕組み）</span>に覚え込ませろ。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">覚醒前役</span></div>
+                      <p>つまり、インスタは入口。LINEは信頼を育てる場所。商品はその先に置くゴール……やっとパズルが繋がってきたっす。脳みそに電源入りました。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="infoGrid">
+                <div class="card"><b>集客後に必要な3点</b><p>①売る商品、②信頼を積むメッセージ、③申し込みや相談へ進む導線。この3つがないと、人だけ集まっても売上にはならない。</p></div>
+                <div class="card"><b>LINEの役割</b><p>LINE公式アカウントは、いきなり売り込む場所ではない。相手の悩みを言語化し、解決策を見せ、申し込み前の不安を減らす場所だ。</p></div>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7a-sec2">
+              <h2>2. 恵比寿課長の「AIで作る！自分のデジタル商品爆速作成術」</h2>
+              <p class="chapterLead">売る商品がないなら、今まで学んできた知識をデジタルコンテンツ（PDF・動画・講座などネットで提供できる商品）に変える。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 02 / 商品企画会議</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ebisu.png" alt="恵比寿課長" onerror="this.classList.add('isMissing');"><span class="speakerName">恵比寿課長</span><span class="roleTag">指導役</span></div>
+                      <p>そうだよ麦田ちゃん。売る商品がないなら、あなたが学んできた知識を<span class="term">デジタルコンテンツ</span>にして売ればいい。AIは商品そのものを一瞬で完成させる魔法じゃないけど、骨組み作りは爆速だよ。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">実践役</span></div>
+                      <p>商品って、才能ある人しか作れないと思ってたっす。俺でも作れるんすか？ 俺の脳内、今クラッシュ寸前っす。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ebisu.png" alt="恵比寿課長" onerror="this.classList.add('isMissing');"><span class="speakerName">恵比寿課長</span><span class="roleTag">指導役</span></div>
+                      <p>作れるよ。ただし条件がある。AIが作った目次に、あなた自身の経験、失敗例、チェックリスト、実践ワークを足す。そこまでやって、ようやく「買った人が動ける商品」になる。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow">
+                <div class="step"><div class="num">1</div><h3>ChatGPTで目次化</h3><p>ChatGPT（会話型AI）に、講座の目的・対象者・日数・ゴールを渡してカリキュラム（教材の目次）を作らせる。</p></div>
+                <div class="step"><div class="num">2</div><h3>Claudeで本文化</h3><p>Claude（文章作成が得意なAI）に、初心者でも分かる章本文、例え話、ワーク、確認問題を作らせる。</p></div>
+                <div class="step"><div class="num">3</div><h3>自分の経験を注入</h3><p>自分の失敗談、実例、現場写真、判断基準を入れる。ここがAI商品と本物商品の分岐点。</p></div>
+                <div class="step"><div class="num">4</div><h3>Canvaで商品化</h3><p>Canva（デザイン作成ツール）のPDFテンプレートに流し込み、読みやすい教材として整える。</p></div>
+              </div>
+              <div class="promptBox" id="day7-product-prompt">あなたはデジタル教材の商品設計者です。
+以下の条件で、初心者向け講座のカリキュラムを作ってください。
+
+【テーマ】Instagram集客に使うCanvaデザイン講座
+【対象者】30〜50代の初心者。デザインが苦手で、投稿作りに時間がかかる人
+【商品形式】PDF教材＋短い解説動画＋実践ワーク
+【期間】5日間
+【ゴール】Canvaで4:5投稿とリール表紙を自力で作れるようにする
+【出力】
+・講座タイトル案を5つ
+・5日分の目次
+・各日のゴール
+・各日のワーク
+・初心者がつまずくポイント
+・購入者が成果を感じやすい順番</div>
+              <div class="copyRow"><span>商品作成の第一歩は、頭の中の知識を「目次」に変えること。</span><button class="copyBtn" data-copy="day7-product-prompt">コピー</button></div>
+            </section>
+
+            <section class="chapter" id="day7a-sec3">
+              <h2>3. 風間部長の激怒「中身のないゴミを自動で売りつけるな！」</h2>
+              <p class="chapterLead">AIで商品を作れる時代だからこそ、顧客をナメた商品は一瞬で見抜かれる。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 03 / 部長乱入</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">リスク役</span></div>
+                      <p>コラァーーー！ 麦田ァーーー！ AIが作ったそれっぽい文章を、LINEの自動配信で右から左へ横流しして売る気じゃないだろうな！ 顧客をナメるのも大概にしろ！</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">冷や汗役</span></div>
+                      <p>ひぃっ！ 目次を作っただけで勝った気になってました！ 俺の浅さ、プリンの皿くらい浅かったっす！</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">リスク役</span></div>
+                      <p>いいか。AIで作っただけの薄っぺらい商品は、顧客に一瞬で見抜かれる。自動化システム（自動でメッセージを送る仕組み）は、顧客と信頼関係を築くための補助線だ。お前自身のリアルな失敗談と改善手順を入れろ。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="dangerPanel"><div class="title">⚠ 商品作成の防衛ライン</div><p>「AIが作ったからすごい」ではなく、「買った人が迷わず実行できるから価値がある」と考える。誇大表現（実際以上にすごく見せる表現）、根拠のない成果保証、他人の教材コピー、著作権侵害素材の流用は、信用とアカウントを同時に燃やす。</p></div>
+              <div class="infoGrid">
+                <div class="card"><b>足すべき人間味</b><ul><li>自分の失敗談</li><li>実際に使ったチェックリスト</li><li>ビフォーアフター</li><li>初心者が迷う場面への具体回答</li></ul></div>
+                <div class="card"><b>入れるべき安全装置</b><ul><li>成果保証ではなく再現手順を示す</li><li>引用元・素材ライセンスを確認する</li><li>購入前に対象者と非対象者を明記する</li><li>返金・問い合わせ導線を用意する</li></ul></div>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7a-sec4">
+              <h2>4. 石沢課長直伝！ファン化ステップ配信と自動セリングの黄金律</h2>
+              <p class="chapterLead">LINE公式アカウントのステップ配信は、いきなり売るためではない。読者の悩みを言語化し、信頼を積み、自然に申し込みへ進めるための順番設計だ。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 04 / LINEシナリオ設計</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>おい麦田、AIで作った骨組みに、お前自身の熱い言葉をブレンドしろ。その上で、LINE公式アカウントに5日間のステップ配信を仕込め。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">実践役</span></div>
+                      <p>5日間で何を送ればいいんすか？ 俺が思いつくの、初日から「買ってください！」しかないっす。終わってるっす。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>初日から売るな。順番は、共感、問題提起、解決策、先行告知、販売開始だ。人は「売られた」と感じると離れる。「自分の悩みを分かってくれた」と感じると前に進む。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow">
+                <div class="step"><div class="num">1</div><h3>1日目：共感</h3><p>「私も昔は失敗ばかりでした」と同じ目線に立つ。自己紹介は実績自慢より失敗談から入る。</p></div>
+                <div class="step"><div class="num">2</div><h3>2日目：問題提起</h3><p>「失敗の原因はセンスではなく設定だった」と常識をひっくり返し、読者の思い込みをほどく。</p></div>
+                <div class="step"><div class="num">3</div><h3>3日目：解決策</h3><p>正しい手順を見せ、ビフォーアフターや事例で未来を想像させる。成果保証ではなく手順を示す。</p></div>
+                <div class="step"><div class="num">4</div><h3>4〜5日目：告知と販売</h3><p>限定性や締切を使うなら根拠を明確にする。申し込みボタンや個別相談へ自然に誘導する。</p></div>
+              </div>
+              <div class="promptBox" id="day7-line-prompt">あなたはLINE公式アカウントのステップ配信設計者です。
+以下の商品を売るための5日間ステップ配信を作ってください。
+
+【商品】CanvaでInstagram投稿を作れるようになる初心者向けPDF教材
+【対象者】デザインが苦手な個人事業主・副業初心者
+【価格帯】低〜中価格帯
+【販売導線】5日目に個別相談予約またはLPへ誘導
+【条件】
+・1通あたり500文字以内
+・スマホで読みやすい短文
+・誇大広告や成果保証をしない
+・1日目は共感、2日目は問題提起、3日目は解決策、4日目は先行告知、5日目は販売開始
+・各日、件名・本文・CTA（次の行動）を出す
+・最後にブロックされやすいNG表現も教えて</div>
+              <div class="copyRow"><span>LINEは売り込み機ではなく、信頼を積む自動接客係として設計する。</span><button class="copyBtn" data-copy="day7-line-prompt">コピー</button></div>
+            </section>
+
+            <section class="chapter" id="day7a-sec5">
+              <h2>5. 今どきの若いモンは、寝ている間に資産を回す</h2>
+              <p class="chapterLead">仕組みが回り始めると、麦田の作業は「毎回ゼロから売る」から「仕組みを改善する」に変わる。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 05 / 数週間後</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">覚醒役</span></div>
+                      <p>LINEに登録した人へ自動で説明が届いて、興味がある人だけ個別相談に進むようになったっす。手動返信の地獄から、ちょっとだけ人間に戻れました。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ebisu.png" alt="恵比寿課長" onerror="this.classList.add('isMissing');"><span class="speakerName">恵比寿課長</span><span class="roleTag">称賛役</span></div>
+                      <p>いいですね。大事なのは、放置ではなく改善です。開封率、クリック率、相談予約率を見て、どの配信で離脱したかを確認しましょう。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">管理役</span></div>
+                      <p>うむ。自動化は完成してからが本番だ。苦情、解約、質問、クリックされない配信を全部ログに残せ。改善しない自動化は、ただの自動迷惑行為だ。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">締め役</span></div>
+                      <p>……今どきの若いモンは、自分の脳みそとAIを直結させて、寝ている間も仕組みを働かせるんだな。ただし、仕組みの責任者は最後まで人間だぞ。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="officeMemoGrid">
+                <div class="memo"><b>自動化前</b><p>毎回ゼロから説明し、同じ質問に何度も答え、販売タイミングを逃す。</p></div>
+                <div class="memo"><b>自動化後</b><p>基本説明はLINEが担当し、興味が高い人だけ相談やLP（販売用ページ）へ進む。</p></div>
+                <div class="memo"><b>人間の仕事</b><p>商品の改善、購入者の成果確認、質問対応、誤解を招く表現の修正を続ける。</p></div>
+              </div>
+            </section>
+
+
+
+            <section class="chapter" id="day7a-carousel">
+              <h2>6. 紙芝居カルーセル戦略｜動画疲れしたら、フィード投稿で脳を掴め</h2>
+              <p class="chapterLead">リール動画（縦型ショート動画）は強い。だが、撮影・編集・投稿を毎日続けるのは体力を削る。2026年のInstagramでは、複数枚の画像を横にスワイプして読ませるフィード投稿、つまりカルーセル投稿（紙芝居型の複数枚画像投稿）も強力な武器になる。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 06 / 動画疲れの午後</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">燃え尽き役</span></div>
+                      <p>もう嫌っす！ リール動画の撮影も編集も多すぎて、毎日投稿なんて体力的に続かないっす！ 頑張った動画も一瞬で消費されて終わる感じがして、俺の魂がエンコード失敗してます！</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>おい麦田。リール動画の流行りに乗ることだけがインスタ運用だと思うな。今どきの若いモンは……動画ばかり見て、インスタの原点である<span class="term">画像投稿</span>の破壊力を忘れてやがる。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>ショート動画の波が強いからこそ、じっくり文字をスワイプして読ませる<span class="term">フィード投稿（カルーセル投稿）</span>が刺さる。動画で消費されるだけじゃなく、紙芝居みたいに保存・読み返しされる投稿を作れ。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ebisu.png" alt="恵比寿課長" onerror="this.classList.add('isMissing');"><span class="speakerName">恵比寿課長</span><span class="roleTag">指導役</span></div>
+                      <p>動画の編集に何時間も奪われるなら、まずは基本の画像投稿をマスターしましょう。喋りや撮影が苦手でも、型に沿えば読みやすい解説投稿は作れます。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow">
+                <div class="step"><div class="num">1</div><h3>サイズは4対5</h3><p>正方形ではなく、1080×1350pxの縦長投稿を使う。スマホ画面で表示面積を取りやすい。</p></div>
+                <div class="step"><div class="num">2</div><h3>1枚目で指を止める</h3><p>表紙には「今更聞けない」「知らないと損」など、読む理由が一瞬で伝わる言葉を置く。</p></div>
+                <div class="step"><div class="num">3</div><h3>2〜4枚目で解決</h3><p>悩みの答えを2〜3個に絞って解説する。詰め込みすぎると読者の脳がログアウトする。</p></div>
+                <div class="step"><div class="num">4</div><h3>最後に行動導線</h3><p>保存、コメント、LINE登録、無料PDFなど、次にやってほしい行動を1つだけ示す。</p></div>
+              </div>
+              <div class="dangerPanel"><div class="title">⚠ 紙芝居戦略の本質</div><p>カルーセル投稿は「ただ画像を並べる投稿」ではない。1枚目で止め、2枚目で続きを読ませ、最後で保存・登録・相談へ進める小さな教材だ。つまり、投稿そのものがミニ講座になる。</p></div>
+            </section>
+
+            <section class="chapter" id="day7a-carousel-howto">
+              <h2>7. つながるカルーセルCanva作成手順｜横スクロールを止めるな</h2>
+              <p class="chapterLead">普通の画像を4枚並べるだけでは、ユーザーは途中で逃げる。隣のページと背景や装飾がつながる「パノラマ型カルーセル」にすると、指が自然に次のページへ動く。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 07 / 風間部長の検品</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">リスク役</span></div>
+                      <p>コラァーーー！ 麦田ァーーー！ 単発の四角い画像をただ並べただけの投稿を作っているな！ そんな教科書みたいな投稿、2枚目を開く前に秒速で逃げられるぞ！</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">震える役</span></div>
+                      <p>また怒号から始まった！ でも確かに、ただのスライド資料みたいになってました。インスタなのに社内会議資料の魂が宿ってました！</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">検品役</span></div>
+                      <p>2026年のトレンドは、隣のページと背景やイラストが地続きに見える<span class="term">つながるカルーセル</span>だ。ページをまたぐ装飾で、読者の指を勝手に次へ動かせ。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow">
+                <div class="step"><div class="num">1</div><h3>超ワイドで作る</h3><p>Canvaのカスタムサイズで、4枚分なら幅4320×高さ1350pxの巨大キャンバスを作る。</p></div>
+                <div class="step"><div class="num">2</div><h3>1080pxごとに分割</h3><p>ガイド（補助線）を1080pxごとに置き、4ページの境界線を見える状態にする。</p></div>
+                <div class="step"><div class="num">3</div><h3>装飾だけまたぐ</h3><p>花、線、背景模様、グラデーションは境界線をまたいでOK。文字は絶対にまたがせない。</p></div>
+                <div class="step"><div class="num">4</div><h3>順番に投稿</h3><p>1枚ずつ切り出し、Instagramで複数選択。1枚目、2枚目、3枚目、4枚目の順番を死守する。</p></div>
+              </div>
+              <div class="infoGrid">
+                <div class="card"><b>安全領域の鉄則</b><p>タイトル、本文、ロゴ、CTA（次の行動）は各ページの中央寄りに置く。境界線の近くに重要文字を置くと、スマホ画面端で切れて読めなくなる。</p></div>
+                <div class="card"><b>一番バグらない代替案</b><p>難しい分割が不安なら、最初から1080×1350pxのページを4枚作り、隣ページの装飾位置を目視で揃える。完璧なパノラマより、読めることが優先だ。</p></div>
+              </div>
+              <div class="promptBox" id="day7-carousel-prompt">あなたはInstagramカルーセル投稿の構成作家です。
+以下の条件で、4枚構成の紙芝居カルーセル投稿案を作ってください。
+
+【テーマ】今更聞けないCanvaの4対5投稿の作り方
+【対象者】インスタ投稿を作りたい初心者
+【目的】保存とLINE登録につなげる
+【形式】1080×1350px、4枚構成
+【条件】
+・1枚目は強い表紙タイトル
+・2〜3枚目は初心者向けの解説
+・4枚目は保存とLINE登録へのCTA（次の行動）
+・各ページの見出し、本文、使う装飾、注意点を出す
+・文字は境界線に置かない
+・つながるカルーセルにする場合、またがせてよい装飾案も出す</div>
+              <div class="copyRow"><span>カルーセルは動画の代用品じゃない。保存される小さな教材として設計する。</span><button class="copyBtn" data-copy="day7-carousel-prompt">コピー</button></div>
+              <div class="officePanel sourceList">
+                <span class="panelLabel">REFERENCE / 紙芝居戦略 参考URL</span>
+                <ul>
+                  <li><a href="https://www.youtube.com/watch?v=Xb6aoVkk7FI&list=PLoQApr14fceNm7iY06opZ14K7xEal-Jvb&index=1&pp=iAQB" target="_blank" rel="noopener noreferrer">参考動画 1：紙芝居カルーセル・Instagram運用関連</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=ASmTlnr786E&list=PLoQApr14fceNm7iY06opZ14K7xEal-Jvb&index=2&pp=iAQB" target="_blank" rel="noopener noreferrer">参考動画 2：紙芝居カルーセル・Instagram運用関連</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=u8HOpFtym5I&list=PLoQApr14fceNm7iY06opZ14K7xEal-Jvb&index=3&pp=iAQB" target="_blank" rel="noopener noreferrer">参考動画 3：紙芝居カルーセル・Instagram運用関連</a></li>
+                </ul>
+              </div>
+            </section>
+
+
+            <section class="chapter" id="day7a-sec6">
+              <h2>8. 常に想定すべき失敗リスクと代替案</h2>
+              <p class="chapterLead">完全自動化は強い。だが、設計を間違えるとLINEブロック、信用低下、アカウント停止の地雷原になる。</p>
+              <div class="dangerPanel"><div class="title">⚠ リスク1：ステップ配信が長すぎる</div><p>1回のLINEが数千文字、10日以上のだらだら配信、毎回売り込み。これは情報オーバーロード（情報が多すぎて疲れること）を起こし、3日目で読まれなくなる。</p></div>
+              <div class="infoGrid">
+                <div class="card"><b>代替案</b><p>ステップ配信は最大5〜7日間に絞る。1通はスマホで読める500文字程度を目安にし、詳しい解説はPDF・短い動画・LPへ逃がす。</p></div>
+                <div class="card"><b>チェック基準</b><p>開封率、クリック率、ブロック率、相談予約率を見る。数字が悪い日は、本文が長い、CTA（次の行動）が弱い、売り込みが早い可能性がある。</p></div>
+              </div>
+              <div class="dangerPanel"><div class="title">⚠ リスク2：LINEアカウントの垢BAN</div><p>「月100万円稼げます」などの怪しい金銭表現、過剰な成果保証、連投、外部規約違反は危険。LINE内でギラギラ売り込みすぎると、信用もアカウントも同時に失う。</p></div>
+              <div class="infoGrid">
+                <div class="card"><b>代替案</b><p>LINEの役割は、信頼構築と個別相談・LPへの案内までに留める。決済や詳細な販売説明は、外部LP（販売ページ）や個別相談で丁寧に行う。</p></div>
+                <div class="card"><b>絶対に避ける言葉</b><p>根拠のない「必ず稼げる」「誰でも成功」「放置で月収保証」。使うなら実績条件、再現条件、対象者、例外を明記する。</p></div>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7a-sec7">
+              <h2>9. 麦田の完全攻略ロードマップ</h2>
+              <p class="chapterLead">これまでの学びは、最終章でひとつの売上導線につながる。</p>
+              <div class="dayBackBoard">
+                <div class="infoGrid">
+                  <div class="card"><b>Vol.1：AIの基本</b><p>AIを超優秀なデジタル秘書として雇う。魔法扱いせず、下書き・要約・整理に使う。</p></div>
+                  <div class="card"><b>Vol.2：インスタ初期設計</b><p>お悩み解決の専門店として看板を掲げ、プロフィールと投稿導線を整える。</p></div>
+                  <div class="card"><b>Vol.3：Canvaデザイン</b><p>1秒で指を止めるビジュアル、4:5投稿、リール表紙、バナーを作る。</p></div>
+                  <div class="card"><b>Vol.4：Edits・Bロール</b><p>短尺動画と映像素材をストックし、投稿を作り続ける仕組みに変える。</p></div>
+                  <div class="card"><b>Vol.5：著作権・防衛</b><p>素材・音楽・AI生成物の権利を確認し、アカウント寿命を守る。</p></div>
+                  <div class="card"><b>最終章：商品作成・自動販売</b><p>デジタル商品を作り、LINE公式アカウントで教育・販売導線を自動化する。</p></div>
+                  <div class="card"><b>追加章：紙芝居カルーセル</b><p>動画疲れを回避し、保存されるフィード投稿でファン化とLINE導線を強化する。</p></div>
+                </div>
+              </div>
+              <div class="officePanel sourceList">
+                <span class="panelLabel">REFERENCE / 参考URL</span>
+                <ul>
+                  <li><a href="https://www.youtube.com/watch?v=Xb6aoVkk7FI&list=PLoQApr14fceNm7iY06opZ14K7xEal-Jvb&index=1&pp=iAQB" target="_blank" rel="noopener noreferrer">参考動画 1：商品作成・自動化関連</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=ASmTlnr786E&list=PLoQApr14fceNm7iY06opZ14K7xEal-Jvb&index=2&pp=iAQB" target="_blank" rel="noopener noreferrer">参考動画 2：商品作成・自動化関連</a></li>
+                  <li><a href="https://www.youtube.com/watch?v=u8HOpFtym5I&list=PLoQApr14fceNm7iY06opZ14K7xEal-Jvb&index=3&pp=iAQB0gcJCT4LAYcqIYzv" target="_blank" rel="noopener noreferrer">参考動画 3：商品作成・自動化関連</a></li>
+                </ul>
+              </div>
+              <div class="promptBox" id="day7-roadmap-prompt">あなたは副業・個人ビジネスの導線設計者です。
+以下の条件で、Instagram集客からLINE教育、デジタル商品販売までのロードマップを作ってください。
+
+【テーマ】自分の知識をPDF教材にして販売する
+【入口】Instagram
+【教育】LINE公式アカウントの5日間ステップ配信
+【商品】PDF教材＋短い動画＋個別相談
+【出力】
+・全体導線
+・各ステップの目的
+・必要な制作物
+・AIに任せる作業
+・人間が必ず確認する作業
+・失敗リスクと代替案</div>
+              <div class="copyRow"><span>最終章のゴールは、集客・教育・販売・改善がつながった小さな自動収益ラインを作ること。</span><button class="copyBtn" data-copy="day7-roadmap-prompt">コピー</button></div>
+            </section>
+          </div>
+        </section>
+        
+
+        <section class="trainingAccordion dayBlock" id="day7-back">
+          <div class="dayHeader">
+            <span>
+              <span class="eyebrow">DAY7 BACK / DESIGN REVIEW 2026</span>
+              <span class="accordionTitle">Day7後半｜これだから最近の若者は：デザイン添削で化けろ</span>
+              <span class="accordionMeta">麦田がインスタ表紙の失敗を、文字・配色・整列・スマホ視認性の添削ルールで修正する。</span>
+            </span>
+          </div>
+          <div class="accordionBody">
+            <section class="hero" id="day7b-hero">
+              <span class="eyebrow">DAY7 BACK / INSTAGRAM DESIGN TUTORING</span>
+              <h1>飾れば勝ちじゃねえ。<br>インスタ表紙は、3秒で読まれて初めて勝ちだ。</h1>
+              <p class="lead">
+                Day7後半のテーマは、インスタ画像や表紙デザインの添削だ。麦田は「頑張ってデコった自信作」を持ってくるが、石沢課長に一刀両断される。ここで学ぶのは、プロっぽく見せる裏技ではなく、文字を読みやすくし、色数を絞り、スマホ画面で一瞬で伝わるように直すための<span class="term">引き算の美学（余計な装飾を消して主役を立てる考え方）</span>だ。
+              </p>
+              <div class="themeStrip">
+                <span class="themePill">🔠 文字の視認性</span>
+                <span class="themePill">🎨 配色3色ルール</span>
+                <span class="themePill">📐 整列と余白</span>
+                <span class="themePill">📱 スマホ3秒チェック</span>
+              </div>
+              <div class="dangerPanel">
+                <div class="title">⚠ まず覚えるルール</div>
+                <p>デザインの目的は「作った本人が満足すること」ではない。インスタの表紙は、スマホで流れてきた瞬間に、誰に向けた何の投稿なのかが読める必要がある。読めないお洒落は、ただの見えない看板だ。</p>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7b-sec1">
+              <h2>1. 麦田の自信作と、石沢課長の「今どきの若いモンは……」</h2>
+              <p class="chapterLead">インスタの初期設定を終えた麦田は、自分なりに頑張って作った表紙デザインをドヤ顔で見せてきた。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 01 / デザイン添削会</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">ドヤ顔役</span></div>
+                      <p>課長！ 僕の作ったインスタ表紙を見てください！ めちゃくちゃ頑張って<span class="term">デコレーション（飾り付け）</span>したっす！ キラキラも吹き出しも矢印も全部乗せっす！</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>おい麦田。なんだこのチンドン屋みたいな画面は。今どきの若いモンは……自分の<span class="term">センス（自己満足のこだわり）</span>でガチャガチャ飾れば、お洒落で目立つと勘違いしてやがる。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>デザインの基本は<span class="term">引き算</span>だ。文字が背景の色と混ざって<span class="term">視認性（パッと見の読みやすさ）</span>が最悪だし、フォント（文字の形）が細すぎてスマホで見たら1文字も読めねえ。ただの文字の羅列はデザインとは言わねえんだよ。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">撃沈役</span></div>
+                      <p>チンドン屋……！ でも言われてみると、俺が見せたい装飾ばかりで、読者が読むべきタイトルが迷子になってるっす。完全に迷路の入口っす。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="infoGrid">
+                <div class="card"><b>ダメな表紙の特徴</b><p>文字が背景に溶ける、色数が多い、フォントが細い、文字位置がバラバラ、装飾が主役になっている。</p></div>
+                <div class="card"><b>勝てる表紙の特徴</b><p>主役の言葉が1つに絞られ、太い文字で読めて、背景と文字のコントラスト（明暗差）が強い。</p></div>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7b-sec2">
+              <h2>2. 恵比寿課長の「文字を主役にする！読みやすさの添削」</h2>
+              <p class="chapterLead">恵比寿課長は、麦田のデザインを責めるのではなく、文字を読ませるための具体的な修正手順に分解する。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 02 / 文字の救急処置</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ebisu.png" alt="恵比寿課長" onerror="this.classList.add('isMissing');"><span class="speakerName">恵比寿課長</span><span class="roleTag">指導役</span></div>
+                      <p>まぁまぁ石沢さん。麦田ちゃん、まずは文字を爆速で読みやすくする工夫を覚えましょう。お洒落さの前に、文字が読める状態を作るのが先です。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">修行役</span></div>
+                      <p>文字を主役にする……つまり、背景とか飾りは脇役に下げるってことっすね。俺、全部センター張らせてました。アイドルグループ崩壊っす。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ebisu.png" alt="恵比寿課長" onerror="this.classList.add('isMissing');"><span class="speakerName">恵比寿課長</span><span class="roleTag">指導役</span></div>
+                      <p>まず文字の後ろに<span class="term">座布団（文字を読みやすくするために下へ敷く四角い図形）</span>を置きます。次に、タイトルは太く、補足は少し細くして<span class="term">コントラスト（強弱の差）</span>を出します。最後に、文字の端をガイド線でビシッと揃えます。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow">
+                <div class="step"><div class="num">1</div><h3>座布団を敷く</h3><p>写真や柄背景に文字を置くなら、白・半透明・薄いベージュの四角を下に敷いて文字を浮かせる。</p></div>
+                <div class="step"><div class="num">2</div><h3>太さを分ける</h3><p>タイトルやバズワード（引きの強い言葉）は太く、補足文は細めにして役割を分ける。</p></div>
+                <div class="step"><div class="num">3</div><h3>端を揃える</h3><p>左揃え・中央揃えを混ぜすぎない。Canvaのガイド線で開始位置を揃える。</p></div>
+                <div class="step"><div class="num">4</div><h3>主役を1つにする</h3><p>全部を目立たせると全部が読まれない。一番読ませたい言葉だけを最大にする。</p></div>
+              </div>
+              <div class="promptBox" id="day7-design-text-prompt">あなたはInstagram表紙デザインの添削者です。
+以下の観点で、私のデザインを添削してください。
+
+【目的】スマホで3秒以内に読める表紙にする
+【対象】Canvaで作ったInstagram投稿・リール表紙
+【添削観点】
+・文字が背景に溶けていないか
+・タイトルの文字が細すぎないか
+・文字の端が揃っているか
+・一番伝えたい言葉が主役になっているか
+・余計な装飾を消した方がよい場所
+
+【出力】
+・良い点
+・読みにくい点
+・最初に直すべき1点
+・具体的な修正手順
+・修正版のレイアウト案</div>
+              <div class="copyRow"><span>添削の第一歩は「何を足すか」ではなく「何を消せば主役が読めるか」。</span><button class="copyBtn" data-copy="day7-design-text-prompt">コピー</button></div>
+            </section>
+
+            <section class="chapter" id="day7b-sec3">
+              <h2>3. 風間部長の激怒「色数が多すぎる！画面がチカチカして目が痛い！」</h2>
+              <p class="chapterLead">風間部長は、麦田のカラフルすぎる画面を見て、配色の基本を叩き込む。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 03 / 配色監査</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">リスク役</span></div>
+                      <p>おいぃぃぃ！ 麦田ァーーー！ 赤に黄色に緑に紫に、1枚の画像の中に何色使っているんだ！ 画面がチカチカして、広告バナーとしての品格が1ミリもないぞ！</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">震え役</span></div>
+                      <p>目立たせたくて全色使いました！ でも、目立つというより、目が逃げるっすね。読者の視線を散らかしてました。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">リスク役</span></div>
+                      <p>いいか。配色（色の組み合わせ）は3色以内に絞れ。背景の大部分を占める<span class="term">ベースカラー（70%）</span>、世界観を決める<span class="term">メインカラー（25%）</span>、重要ワードだけに使う<span class="term">アクセントカラー（5%）</span>だ。原色を並べるな。くすんだ同系色でまとめろ。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="officeMemoGrid">
+                <div class="memo"><b>ベースカラー 70%</b><p>背景・余白・全体の空気を作る色。白、薄いベージュ、淡いグレーなど。</p></div>
+                <div class="memo"><b>メインカラー 25%</b><p>ブランド感を作る色。くすみピンク、ネイビー、ブラウンなど世界観を決める。</p></div>
+                <div class="memo"><b>アクセントカラー 5%</b><p>ボタン、重要語、数字など「ここだけ見てほしい」場所に少量だけ使う。</p></div>
+              </div>
+              <div class="dangerPanel"><div class="title">⚠ 配色の禁止事項</div><p>赤・黄・緑・紫のような強い色を同じ強さで並べると、読者の視線は主役を失う。色は増やすほど派手になるが、伝わりやすくなるわけではない。</p></div>
+            </section>
+
+            <section class="chapter" id="day7b-sec4">
+              <h2>4. 失敗する可能性とリスク回避の絶対案</h2>
+              <p class="chapterLead">デザインがスルーされる最大のリスクは、パソコンの大画面だけで作って満足することだ。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 04 / スマホ検品</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>部長の言う通りだ、麦田。お前のデザインがスルーされる最大のリスクは、パソコンの大画面で見ながら作っていることだ。ターゲットは手のひらサイズの小さな画面で見る。文字が潰れてりゃ、その時点でゴミ箱行きだ。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">検品役</span></div>
+                      <p>PCだと綺麗に見えるのに、スマホだと読めないやつっすね。俺、作業画面の大きさに騙されてました。ズルいっす、PC。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">本質役</span></div>
+                      <p>画像を1枚作るたびに、Canvaの<span class="term">ズーム（画面表示の拡大縮小）</span>を10%〜20%まで小さくしろ。その状態で3秒以内にタイトルが読めるか確認する。読めなければ、装飾を消して文字を1.5倍にしろ。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="flow">
+                <div class="step"><div class="num">1</div><h3>10〜20%表示</h3><p>Canvaの画面を小さくして、スマホで流れてくるサイズに近づける。</p></div>
+                <div class="step"><div class="num">2</div><h3>3秒で読む</h3><p>タイトルを3秒以内に読めるか確認。読めないならデザインではなく騒音。</p></div>
+                <div class="step"><div class="num">3</div><h3>装飾を消す</h3><p>吹き出し、イラスト、影、線、飾り枠を削り、文字の周りに余白を作る。</p></div>
+                <div class="step"><div class="num">4</div><h3>文字を1.5倍</h3><p>主役の言葉を大きくし、補足文を減らす。読む量を減らせば伝わる速度が上がる。</p></div>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7b-sec5">
+              <h2>5. 今どきの若いモンは、プロの技をコピペして化ける</h2>
+              <p class="chapterLead">数日後。麦田はプロの添削ルールを見返し、無駄な装飾を削った新しい投稿画像を披露した。</p>
+              <div class="officePanel">
+                <span class="panelLabel">SCENE 05 / 添削後の発表</span>
+                <div class="dialogue">
+                  <div class="line">
+                    <div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./mugita.png" alt="麦田 新人" onerror="this.classList.add('isMissing');"><span class="speakerName">麦田 新人</span><span class="roleTag">覚醒役</span></div>
+                      <p>無駄なデコレーションを消して、くすみベージュの背景に極太の文字を置いたっす。白い座布団も敷いて、アクセントカラーはゴールドだけに絞りました！</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./kazama.png" alt="風間部長" onerror="this.classList.add('isMissing');"><span class="speakerName">風間部長</span><span class="roleTag">称賛役</span></div>
+                      <p>おお……新人が作ったとは思えない。高級感と読みやすさが両立している。色も整理され、視線の迷子が消えたな。</p>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ebisu.png" alt="恵比寿課長" onerror="this.classList.add('isMissing');"><span class="speakerName">恵比寿課長</span><span class="roleTag">称賛役</span></div>
+                      <p>良いですね。自分のセンスを捨てたのではなく、プロのルールを使ってセンスを育てたんです。型を守るから、見やすさが安定します。</p>
+                    </div>
+                  </div>
+                  <div class="line right">
+                    <div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div>
+                    <div class="bubble">
+                      <div class="speaker"><img class="speakerIcon" src="./ishizawa.png" alt="石沢課長" onerror="this.classList.add('isMissing');"><span class="speakerName">石沢課長</span><span class="roleTag">締め役</span></div>
+                      <p>……今どきの若いモンは、自分のセンスなんか最初から過信せず、プロの添削（成功法則のルール）をそのまま自分の手足にしてやがるな。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="infoGrid">
+                <div class="card"><b>添削前</b><p>装飾が多く、文字が背景に溶け、色が多く、視線が散る。頑張りは見えるが読者が読めない。</p></div>
+                <div class="card"><b>添削後</b><p>文字が主役になり、色数が3色以内に収まり、スマホでも3秒で内容が読める。</p></div>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7b-sec6">
+              <h2>8. 常に想定すべき失敗リスクと代替案</h2>
+              <p class="chapterLead">お洒落を狙うほど、読みにくさと統一感崩壊の罠に落ちやすい。</p>
+              <div class="dangerPanel">
+                <div class="title">⚠ リスク1：大人可愛いを意識しすぎて文字が風景に溶ける</div>
+                <p>薄いピンクの背景に細い白文字を置くと、保護色（背景と同化して見えない状態）になる。代替案は、背景が薄いなら濃い茶色・濃いグレー、背景が濃いなら白文字を使うこと。お洒落さより視覚的な読みやすさを優先する。</p>
+              </div>
+              <div class="dangerPanel">
+                <div class="title">⚠ リスク2：無料素材を使いすぎて統一感が崩壊する</div>
+                <p>Canvaの可愛い素材をバラバラに拾うと、水彩風・アニメ風・線画風が混ざり、世界観が散らかる。代替案は、1投稿で使う素材を同じデザイナー、同じ素材セット、同じタッチに絞ること。混ぜるな、危険だ。</p>
+              </div>
+              <div class="dangerPanel">
+                <div class="title">⚠ リスク3：文字を詰め込みすぎて読む気が消える</div>
+                <p>表紙に説明を全部入れると、タイトルが埋もれる。代替案は、表紙は1メッセージだけに絞り、詳しい説明は2枚目以降のカルーセル（複数枚投稿）や本文に回すこと。</p>
+              </div>
+            </section>
+
+            <section class="chapter" id="day7b-sec7">
+              <h2>7. 添削チェックリスト：投稿前にここだけ見ろ</h2>
+              <p class="chapterLead">投稿前にこのチェックを通せば、自己満足デザインから読まれる表紙へ一気に近づく。</p>
+              <div class="infoGrid">
+                <div class="card"><b>文字チェック</b><ul><li>スマホサイズで3秒以内に読める</li><li>タイトルが一番大きい</li><li>文字の端が揃っている</li><li>背景と文字の明暗差がある</li></ul></div>
+                <div class="card"><b>配色チェック</b><ul><li>色数は3色以内</li><li>アクセントカラーは5%だけ</li><li>原色を多用していない</li><li>同系色でまとまっている</li></ul></div>
+                <div class="card"><b>装飾チェック</b><ul><li>飾りが主役を邪魔していない</li><li>素材のタッチが統一されている</li><li>余白がある</li><li>吹き出しや矢印を使いすぎていない</li></ul></div>
+                <div class="card"><b>投稿前チェック</b><ul><li>Canvaを10〜20%表示にする</li><li>実機スマホで確認する</li><li>読めなければ文字を1.5倍にする</li><li>迷ったら装飾を消す</li></ul></div>
+              </div>
+              <div class="promptBox" id="day7-design-check-prompt">あなたはCanvaとInstagram表紙デザインの添削者です。
+以下のチェックリストで、投稿前の最終確認をしてください。
+
+【チェック項目】
+1. タイトルはスマホで3秒以内に読めるか
+2. 背景と文字のコントラストは十分か
+3. 色数はベース70%、メイン25%、アクセント5%に近いか
+4. フォントの太さにメリハリがあるか
+5. 文字の端や余白が揃っているか
+6. 装飾が主役を邪魔していないか
+7. 素材のタッチが統一されているか
+
+【出力】
+・今すぐ直すべき順番トップ5
+・消すべき装飾
+・大きくすべき文字
+・変えるべき配色
+・スマホ確認で見るポイント</div>
+              <div class="copyRow"><span>迷ったらこのプロンプトで、AIに「足す案」ではなく「消す案」を出させる。</span><button class="copyBtn" data-copy="day7-design-check-prompt">コピー</button></div>
+            </section>
+
+            <section class="chapter sourceList" id="day7b-sec8">
+              <h2>8. 参考リンク</h2>
+              <p class="chapterLead">今回のDay7後半は、ブラザーが貼ってくれたデザイン添削マニュアルを教材HTML用に再構成した。以下の動画リンクは、学習用の参考URLとして残している。</p>
+              <ul>
+                <li><a href="https://www.youtube.com/watch?v=K1oBUoBxO9s&list=PLoQApr14fcePlAH19Wdz0zmc_NWyHSe7r&index=1&t=11s" target="_blank" rel="noopener">参考動画1：デザイン添削シリーズ</a></li>
+                <li><a href="https://www.youtube.com/watch?v=i-9emBO-jwA&list=PLoQApr14fcePlAH19Wdz0zmc_NWyHSe7r&index=2" target="_blank" rel="noopener">参考動画2：デザイン添削シリーズ</a></li>
+                <li><a href="https://www.youtube.com/watch?v=MmD7mwnd5aE&list=PLoQApr14fcePlAH19Wdz0zmc_NWyHSe7r&index=3" target="_blank" rel="noopener">参考動画3：デザイン添削シリーズ</a></li>
+              </ul>
+            </section>
+          </div>
+        </section>
+
+        <footer>Day7｜これだから最近の若者は｜前半：商品作成・LINE自動セールス／後半：デザイン添削<br>キャラクター画像：./mugita.png / ./ishizawa.png / ./ebisu.png / ./kazama.png</footer>
+      </div>
+    </main>
+
+    <aside class="castRail">
+      <h2 class="castTitle">登場人物</h2>
+      <div class="castCard"><div class="castTop"><div class="avatar mugita hasImage" data-initial="麦" aria-label="麦田 新人"><img class="avatarImg" src="./mugita.png" alt="麦田 新人" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div><div class="castText"><b>麦田 新人</b><span>AI・SNS・Canvaに振り回される新人。読者の分身。</span></div></div></div>
+      <div class="castCard"><div class="castTop"><div class="avatar ishizawa hasImage" data-initial="石" aria-label="石沢課長"><img class="avatarImg" src="./ishizawa.png" alt="石沢課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div><div class="castText"><b>石沢課長</b><span>「これだから最近の若者は」で本質を叩く役。</span></div></div></div>
+      <div class="castCard"><div class="castTop"><div class="avatar ebisu hasImage" data-initial="恵" aria-label="恵比寿課長"><img class="avatarImg" src="./ebisu.png" alt="恵比寿課長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div><div class="castText"><b>恵比寿課長</b><span>麦田の上司の一人。型と段取りを教える指導役。</span></div></div></div>
+      <div class="castCard"><div class="castTop"><div class="avatar kazama hasImage" data-initial="風" aria-label="風間部長"><img class="avatarImg" src="./kazama.png" alt="風間部長" onerror="this.remove(); this.parentElement.classList.add('noImage'); this.parentElement.classList.remove('hasImage');"></div><div class="castText"><b>風間部長</b><span>リスク管理・検品・権限確認の番人。</span></div></div></div>
+      <div class="mission">キャラクター画像はHTMLと同じフォルダのPNGを読む仕様。PNGがない場合、画像は表示されない。</div>
+    </aside>
+  </div>
+  <script>
+    document.querySelectorAll('.copyBtn').forEach((btn)=>{
+      btn.addEventListener('click', async ()=>{
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if(!el) return;
+        try{
+          await navigator.clipboard.writeText(el.innerText);
+          const old = btn.textContent;
+          btn.textContent = 'コピー済み';
+          setTimeout(()=>btn.textContent = old, 1200);
+        }catch(e){
+          alert('コピーできなかった。手動で選択してコピーしてくれ。');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
